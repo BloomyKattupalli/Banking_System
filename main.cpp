@@ -3,7 +3,7 @@ using namespace std;
 
 class bankaccount {
 private:
-  unsigned int accno;
+  unsigned int accno;//account number of the bank account
   int currentbalance;
   bankaccount *next;
 
@@ -15,7 +15,7 @@ public:
   }
  bankaccount(int k) {
     accno = k;
-    currentbalance = 1000;
+    currentbalance = 1000;//initially each account has 1000 in it.
     next = nullptr;
   }
   friend class SingleLinkedList;
@@ -63,7 +63,7 @@ public:
 };
 class transaction {
 private:
-  int ac1;
+  int acno;
   char dorw;
   int amount;
   transaction *prev;
@@ -71,14 +71,14 @@ private:
 
 public:
   transaction() {
-    ac1 = -1;
-    dorw = '\0';
+    acno = -1;
+    dorw = '\0';//deposit or withdrawl
     amount = 0;
     prev = nullptr;
     next = nullptr;
   }
   transaction(int ac2, char dorw2, int amount1) {
-    ac1 = ac2;
+    acno = ac2;
     dorw = dorw2;
     amount = amount1;
     prev = nullptr;
@@ -120,7 +120,7 @@ public:
   void printalltransaction() {
     transaction *temp = head->next;
     while (temp != tail) {
-      cout << temp->ac1 << " " << temp->dorw << " " << temp->amount << " ";
+      cout << temp->acno << " " << temp->dorw << " " << temp->amount << " ";
       temp = temp->next;
     }
     cout << endl;
@@ -137,7 +137,7 @@ public:
         cursor=cursor->next;
        bankaccount *temp2 =list1.first;
       while (temp2 != nullptr) {
-        if (temp2->accno == cursor->ac1) {
+        if (temp2->accno == cursor->acno) {
           if (cursor->dorw == 'W') {
             temp2->currentbalance = temp2->currentbalance - cursor->amount;
           } else {
@@ -157,12 +157,12 @@ public:
     }
     for (int i = 0; i < y; i++) {
       bankaccount *temp2 = list1.first;
-        while(cursor->ac1!=temp2->accno) {
+        while(cursor->acno!=temp2->accno) {
           temp2=temp2->next;
         }
-          if (cursor->dorw == 'W') {
+          if (cursor->dorw == 'W') {//for withdrawl
             temp2->currentbalance = temp2->currentbalance + cursor->amount;
-          } else {
+          } else {//for deposit
             temp2->currentbalance = temp2->currentbalance - cursor->amount;
           }
           N++;
@@ -189,7 +189,7 @@ public:
     if(k<=NN-N){
          bankaccount *temp2 =list1.first;
       while (temp2 != nullptr) {
-        if (temp2->accno == t->ac1) {
+        if (temp2->accno == t->acno) {
           if (t->dorw == 'W') {
             temp2->currentbalance = temp2->currentbalance - t->amount;
           } else {
@@ -205,8 +205,8 @@ public:
   void printalltransactionsofy(int y,SingleLinkedList& list1) {
     transaction *temp = head->next;
     while (temp!= cursor->next) {
-      if (temp->ac1 == y) {
-        cout << temp->ac1 << " " << temp->dorw << " " << temp->amount << endl;
+      if (temp->acno == y) {
+        cout << temp->acno << " " << temp->dorw << " " << temp->amount << endl;
       }
       temp=temp->next;
     }
@@ -216,7 +216,7 @@ void processallfurthertransactions(SingleLinkedList& list1){
       cursor=cursor->next;
     bankaccount* temp2=list1.first;
     while (temp2 != nullptr) {
-        if (temp2->accno == cursor->ac1) {
+        if (temp2->accno == cursor->acno) {
           if (cursor->dorw == 'W') {
             temp2->currentbalance = temp2->currentbalance - cursor->amount;
           } else {
@@ -229,7 +229,7 @@ void processallfurthertransactions(SingleLinkedList& list1){
       }
   }
 }
-void printcurbalofx(int x,SingleLinkedList& list1){
+void printcurrentbalance_of_x(int x,SingleLinkedList& list1){
     bankaccount* temp=list1.first;
     while(temp!=nullptr){
         if(temp->accno==x){
@@ -239,7 +239,7 @@ void printcurbalofx(int x,SingleLinkedList& list1){
         temp=temp->next;
     }
 }
-void printnoofaccwithcurbalmorethanorequaltox(int x,SingleLinkedList& list1){
+void print_no_of_accounts_with_currentbalance_morethan_or_equal_to_x(int x,SingleLinkedList& list1){
     bankaccount* temp=list1.first;
     int count=0;
     while(temp!=nullptr){
@@ -250,7 +250,7 @@ void printnoofaccwithcurbalmorethanorequaltox(int x,SingleLinkedList& list1){
     }
     cout<<count<<endl;
 }
-void printaccountswithhighestbalance(SingleLinkedList& list1){
+void printaccounts_with_highestbalance(SingleLinkedList& list1){
     bankaccount* temp=list1.first;
     vector<int>v;
     int max=0;
@@ -276,7 +276,7 @@ void deletetransaction(int ac,int M,SingleLinkedList& list1){
         int i=0;
            transaction*temp=cursor->next;
             while((temp!=tail)&&(i<M)){
-        if(temp->ac1==ac){
+        if(temp->acno==ac){
             transaction*temp1=temp;
             (temp1->prev)->next=temp1->next;
             (temp1->next)->prev=temp1->prev;
@@ -292,9 +292,9 @@ void deletetransaction(int ac,int M,SingleLinkedList& list1){
         int i=0;
            transaction*temp=cursor->prev;
       while((temp!=head)&&(i<abs(M))){
-        if(temp->ac1==ac){
+        if(temp->acno==ac){
             bankaccount *temp2 = list1.first;
-      while (temp2->accno!=temp->ac1) {
+      while (temp2->accno!=temp->acno) {
         temp2=temp2->next;
       }
           if (temp->dorw == 'W') {
@@ -335,13 +335,13 @@ int main() {
   cin >> N;
   NN=N;
   DoubleLinkedList list2;
-  int ac1;
+  int acno;
   char dorw1;
   int amount1;
   cout << "Enter the transactions (account_number direction amount):" << endl;
   for (int i = 0; i < N; i++) {
-    cin >> ac1 >> dorw1 >> amount1;
-    list2.inserttransaction(ac1, dorw1, amount1);
+    cin >> acno >> dorw1 >> amount1;
+    list2.inserttransaction(acno, dorw1, amount1);
   }
    // list1.print1();
    // list2.print2();
@@ -363,42 +363,42 @@ int main() {
       // list1.print1();
     }
      else if (s == "I") {
-      int ac1;
+      int acno;
       char c3;
       int amount3;
       int k;
        cout << "Enter the transaction details (account_number direction amount position): ";
-      cin >> ac1 >> c3 >> amount3 >> k;
-      transaction *t = new transaction(ac1, c3, amount3);
+      cin >> acno >> c3 >> amount3 >> k;
+      transaction *t = new transaction(acno, c3, amount3);
       list2.insertkpos(t, k,list1);
       // list2.print2();
       // list1.print1();
     } 
-    else if (s == "S") {
+    else if (s == "S") {// DISPLAYS ALL TRANSACTIONS OF ACCOUNT y
        cout << "Enter the account number to display transactions: ";
       int y;
       cin >> y;
       list2.printalltransactionsofy(y,list1);
     }
-    else if(s=="C"){
+    else if(s=="C"){//PROCESSES ALL FURTHER TRANSACTIONS
        list2.processallfurthertransactions(list1); 
        // list1.print1();
     }
-    else if(s=="G"){
+    else if(s=="G"){//PRINTS THE ACCOUNT NUMBERS WHICH HAVE CURRENT BALANCE GREATER THAN r
       cout << "Enter the minimum balance: ";
       int r;
       cin>>r;
-      list2.printnoofaccwithcurbalmorethanorequaltox(r,list1);
+      list2.print_no_of_accounts_with_currentbalance_morethan_or_equal_to_x(r,list1);
     }
-    else if(s=="M"){
-        list2.printaccountswithhighestbalance(list1);
+    else if(s=="M"){//PRINTS THE ACCOUNT NUMBERS WHOSE BALANCE IS HIGHEST
+        list2.printaccounts_with_highestbalance(list1);
     }
-    else if(s=="V"){
+    else if(s=="V"){//PRINTS THE CURRENT BALANCE OF ACCOUNT NUMBER x
       cout << "Enter the account number to display current balance: ";
         cin>>x;
-        list2.printcurbalofx(x,list1);
+        list2.printcurrentbalance_of_x(x,list1);
     }
-    else if(s=="D"){
+    else if(s=="D"){//DELETES M TRANSACTIONS OF A
       cout << "Enter the account number and number of transactions to delete: ";
         int A;
         cin>>A;
